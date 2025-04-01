@@ -16,6 +16,11 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     return render_template('index.html')
+    
+@app.route('/pdf-download')
+def pdf_download_page():
+    """Route to display a simple download page for the source code PDF."""
+    return app.send_static_file('download_pdf.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
