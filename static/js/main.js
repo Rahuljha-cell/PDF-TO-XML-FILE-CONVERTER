@@ -22,7 +22,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Submit the form automatically when a file is selected
                 if (document.querySelector('#autoSubmit').checked) {
-                    document.querySelector('form').submit();
+                    // Get the PDF upload form specifically by looking for a form that contains pdf_file
+                    const uploadForm = document.querySelector('form[enctype="multipart/form-data"]');
+                    if (uploadForm) {
+                        // Use submit button click instead of form.submit() to trigger validation
+                        const submitBtn = document.getElementById('pdfSubmitBtn');
+                        if (submitBtn) {
+                            submitBtn.click();
+                        } else {
+                            // Fallback to traditional submit if button not found
+                            uploadForm.submit();
+                        }
+                    }
                 }
             }
         });
@@ -68,7 +79,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Submit the form automatically when a file is dropped
                     if (document.querySelector('#autoSubmit').checked) {
-                        document.querySelector('form').submit();
+                        // Get the PDF upload form specifically
+                        const uploadForm = document.querySelector('form[enctype="multipart/form-data"]');
+                        if (uploadForm) {
+                            // Use submit button click instead of form.submit() to trigger validation
+                            const submitBtn = document.getElementById('pdfSubmitBtn');
+                            if (submitBtn) {
+                                submitBtn.click();
+                            } else {
+                                // Fallback to traditional submit if button not found
+                                uploadForm.submit();
+                            }
+                        }
                     }
                 } else {
                     alert('Please upload a PDF file.');
