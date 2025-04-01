@@ -67,6 +67,10 @@ def generate_code_pdf(output_pdf="pdf_to_xml_converter_code.pdf"):
         ('forms.py', 'Web Form Definitions'),
         ('routes.py', 'Application Routes'),
         ('pdf_converter.py', 'PDF to XML Conversion Logic'),
+    ]
+    
+    # JavaScript files
+    js_files = [
         ('static/js/main.js', 'Main JavaScript'),
         ('static/js/pdf_viewer.js', 'PDF Viewer JavaScript'),
     ]
@@ -86,8 +90,14 @@ def generate_code_pdf(output_pdf="pdf_to_xml_converter_code.pdf"):
         ('static/css/style.css', 'CSS Stylesheet'),
     ]
     
+    # Configuration files
+    config_files = [
+        ('pyproject.toml', 'Python Project Configuration'),
+        ('.replit', 'Replit Configuration File'),
+    ]
+    
     # Combine all files
-    all_files = files_to_include + template_files + css_files
+    all_files = files_to_include + js_files + template_files + css_files + config_files
     
     # Add each file's content to the PDF
     for filepath, description in all_files:
