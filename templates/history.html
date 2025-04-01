@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Conversion History - PDF to XML Converter{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Conversion History</h1>
+
+{% if conversions %}
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table history-table mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>PDF Filename</th>
+                        <th>Date</th>
+                        <th>File Size</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for conversion in conversions %}
+                    <tr>
+                        <td>{{ conversion.id }}</td>
+                        <td>{{ conversion.pdf_filename }}</td>
+                        <td>{{ conversion.conversion_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>
+                            {% if conversion.file_size %}
+                                {% if conversion.file_size > 1024 * 1024 %}
+                                    {{ (conversion.file_size / (1024 * 1024))|round(2) }} MB
+                                {% elif conversion.file_size > 1024 %}
+                                    {{ (conversion.file_size / 1024)|round(2) }} KB
+                                {% else %}
+                                    {{ conversion.file_size }} bytes
+                                {% endif %}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if conversion.status == 'completed' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif conversion.status == 'failed' %}
+                                <span class="badge bg-danger">Failed</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ conversion.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('view_conversion', conversion_id=conversion.id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="View">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </a>
+                                <a href="{{ url_for('download_xml', conversion_id=conversion.id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Download XML">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card shadow-sm">
+    <div class="card-body text-center py-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock mb-3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <h4>No Conversion History Yet</h4>
+        <p class="text-muted">Your PDF to XML conversion history will appear here</p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-2">Go to Dashboard</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
