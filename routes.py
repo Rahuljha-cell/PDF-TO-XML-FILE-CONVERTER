@@ -164,3 +164,22 @@ def get_conversion_data(conversion_id):
         'file_size': conversion.file_size,
         'xml_content': conversion.xml_content
     })
+
+@app.route('/download/source-code')
+def download_source_code():
+    """Route to download the complete source code PDF."""
+    try:
+        pdf_path = "pdf_to_xml_converter_code.pdf"
+        if os.path.exists(pdf_path):
+            return send_file(
+                pdf_path,
+                mimetype='application/pdf',
+                as_attachment=True,
+                download_name="pdf_to_xml_converter_source_code.pdf"
+            )
+        else:
+            flash('Source code PDF not found. Please generate it first.', 'error')
+            return redirect(url_for('index'))
+    except Exception as e:
+        flash(f'Error downloading source code: {str(e)}', 'error')
+        return redirect(url_for('index'))
